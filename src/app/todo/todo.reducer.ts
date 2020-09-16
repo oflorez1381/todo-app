@@ -1,6 +1,5 @@
 import * as fromTodo from './todo.actions';
 import { Todo } from './model/todo.model';
-import {DeleteTodoAction} from './todo.actions';
 
 const todo1 = new Todo('Vencer a Thanos');
 const todo2 = new Todo('Salvar el mundo');
@@ -39,6 +38,15 @@ export function todoReducer(state = initialState, action: fromTodo.Actions): Tod
         });
       case fromTodo.DELETE_TODO:
         return state.filter( todoEdit => action instanceof fromTodo.DeleteTodoAction && todoEdit.id !== action.id);
+      case fromTodo.TOGGLE_ALL_TODO:
+        return state.map( todoEdit => {
+          if (action instanceof  fromTodo.ToggleAllTodoAction){
+            return {
+              ...todoEdit,
+              completed: action.completed
+            };
+          }
+        });
       default:
         return state;
     }
