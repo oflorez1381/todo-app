@@ -1,7 +1,7 @@
 export class Todo {
-  private id: number;
-  private text: string;
-  private completed: boolean;
+  readonly id: number;
+  public text: string;
+  public completed: boolean;
 
   constructor(text: string) {
     this.text = text.charAt(0).toUpperCase() + text.slice(1);
