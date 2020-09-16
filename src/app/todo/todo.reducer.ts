@@ -1,5 +1,6 @@
 import * as fromTodo from './todo.actions';
 import { Todo } from './model/todo.model';
+import {DeleteTodoAction} from './todo.actions';
 
 const todo1 = new Todo('Vencer a Thanos');
 const todo2 = new Todo('Salvar el mundo');
@@ -9,11 +10,14 @@ export function todoReducer(state = initialState, action: fromTodo.Actions): Tod
 
     switch ( action.type ){
       case fromTodo.ADD_TODO:
-        const todo = new Todo(action.text);
-        return [...state, todo];
+        if (action instanceof fromTodo.AddTodoAction) {
+          const todo = new Todo(action.text);
+          return [...state, todo];
+        }
+        return state;
       case fromTodo.TOGGLE_TODO:
         return state.map( todoEdit => {
-          if (todoEdit.id === action.id){
+          if (!(action instanceof fromTodo.ToggleTodoAction) || todoEdit.id === action.id){
             return {
               ...todoEdit,
               completed: !todoEdit.completed
@@ -24,7 +28,7 @@ export function todoReducer(state = initialState, action: fromTodo.Actions): Tod
         });
       case fromTodo.EDIT_TODO:
         return state.map( todoEdit => {
-          if (todoEdit.id === action.id){
+          if (action instanceof fromTodo.EditTodoAction && todoEdit.id === action.id){
             return {
               ...todoEdit,
               text: action.text
@@ -33,6 +37,8 @@ export function todoReducer(state = initialState, action: fromTodo.Actions): Tod
             return todoEdit;
           }
         });
+      case fromTodo.DELETE_TODO:
+        return state.filter( todoEdit => action instanceof fromTodo.DeleteTodoAction && todoEdit.id !== action.id);
       default:
         return state;
     }

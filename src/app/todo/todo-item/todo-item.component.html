@@ -7,7 +7,7 @@
            [formControl]="checkField"
            [checked]="todo.completed">
     <label (dblclick)="edit()">{{ todo.text }}</label>
-    <button class="destroy"></button>
+    <button (click)="deleteTodo()" class="destroy"></button>
   </div>
   <input class="edit"
          [value]="todo.text"
