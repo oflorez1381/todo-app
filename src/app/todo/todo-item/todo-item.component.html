@@ -13,5 +13,6 @@
          [value]="todo.text"
          [formControl]="textInput"
          (blur)="finishEdition()"
+         (keydown.enter)="finishEdition()"
          #textInputRef>
 </li>
